@@ -89,4 +89,4 @@ npm pack ./dist/ng-sql-viewer
 
 The repository contains the component library, its tests, and Angular library build configuration.
 
-No npm publication is performed. The final package identity and project license require a release decision. Third-party runtime licenses are included in `THIRD_PARTY_NOTICES.md`.
+No npm publication is performed. The project uses the MIT license. The final package identity requires a release decision. Third-party runtime licenses are included in `THIRD_PARTY_NOTICES.md`.

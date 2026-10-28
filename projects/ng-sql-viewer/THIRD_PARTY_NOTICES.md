@@ -1,6 +1,6 @@
 # Third-party runtime notices
 
-The project license is undecided; these notices apply to dependency code.
+The project uses the MIT license; these notices apply to dependency code.
 
 ## prismjs 1.30.0 (MIT)
 

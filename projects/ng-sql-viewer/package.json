@@ -11,5 +11,6 @@
     "sql-formatter": "15.6.10"
   },
   "sideEffects": false,
-  "description": "Standalone Angular SQL viewer with optional native editing, formatting, and copying."
+  "description": "Standalone Angular SQL viewer with optional native editing, formatting, and copying.",
+  "license": "MIT"
 }
