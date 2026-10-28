@@ -1,0 +1,31 @@
+<div class="toolbar">
+  @if (showCopy()) {
+    <button type="button" data-action="copy" (click)="copySql()">Copy</button>
+  }
+  @if (showFormat()) {
+    <button type="button" data-action="format" (click)="formatSql()">Format</button>
+  }
+</div>
+<div class="surface" [class.wrapped]="wrap()" [style.height]="height()">
+  <pre
+    #layer
+    aria-hidden="true"
+  ><code>@for (token of tokens(); track $index) {<span [class]="token.type ? 'token ' + token.type : ''">{{ token.text }}</span>}</code></pre>
+  <textarea
+    #field
+    [readOnly]="!editable()"
+    spellcheck="false"
+    [attr.wrap]="wrap() ? 'soft' : 'off'"
+    [value]="initialValue"
+    [attr.aria-label]="ariaLabel()"
+    (input)="onInput($event)"
+    (scroll)="syncScroll()"
+    (compositionstart)="composing.set(true)"
+    (compositionend)="composing.set(false)"
+  ></textarea>
+</div>
+
+@if (error()) {
+  <p class="feedback error" role="alert">{{ error() }}</p>
+}
+<p class="feedback" role="status">{{ copyFeedback() }}</p>

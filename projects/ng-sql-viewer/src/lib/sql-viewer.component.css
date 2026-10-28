@@ -1,0 +1,179 @@
+:host {
+  display: block;
+  min-width: 0;
+  --sql-bg: #f7f9fc;
+  --sql-fg: #243247;
+  --sql-border: #a8b4c4;
+  --sql-keyword: #7342a4;
+  --sql-string: #126b49;
+  --sql-number: #a34b13;
+  --sql-comment: #5f6f7f;
+  --sql-operator: #344fa3;
+  --sql-focus: #2563eb;
+  --sql-error: #a12835;
+  color: var(--sql-fg);
+  color-scheme: light;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+:host([data-theme='dark']) {
+  --sql-bg: #172131;
+  --sql-fg: #dce5f2;
+  --sql-border: #64748b;
+  --sql-keyword: #c7a7fa;
+  --sql-string: #7ed9af;
+  --sql-number: #f7bd82;
+  --sql-comment: #9aadc4;
+  --sql-operator: #9bb7ff;
+  --sql-focus: #8bb4ff;
+  --sql-error: #ffacb5;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :host([data-theme='system']) {
+    --sql-bg: #172131;
+    --sql-fg: #dce5f2;
+    --sql-border: #64748b;
+    --sql-keyword: #c7a7fa;
+    --sql-string: #7ed9af;
+    --sql-number: #f7bd82;
+    --sql-comment: #9aadc4;
+    --sql-operator: #9bb7ff;
+    --sql-focus: #8bb4ff;
+    --sql-error: #ffacb5;
+    color-scheme: dark;
+  }
+}
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.toolbar:empty {
+  display: none;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: var(--sql-bg);
+  border: 1px solid var(--sql-border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+button:hover {
+  border-color: var(--sql-focus);
+}
+button:focus-visible,
+.surface:focus-within {
+  outline: 2px solid var(--sql-focus);
+  outline-offset: 2px;
+}
+.surface {
+  position: relative;
+  min-height: 48px;
+  overflow: hidden;
+  border: 1px solid var(--sql-border);
+  border-radius: 8px;
+  background: var(--sql-bg);
+}
+pre,
+textarea {
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  padding: 16px;
+  width: 100%;
+  height: 100%;
+  font:
+    14px/1.6 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  font-variant-ligatures: none;
+  letter-spacing: normal;
+  tab-size: 4;
+  text-align: left;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+pre {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  visibility: hidden;
+}
+code {
+  font: inherit;
+}
+pre code::after {
+  content: '\200b';
+}
+textarea {
+  position: relative;
+  display: block;
+  resize: none;
+  overflow: auto;
+  background: transparent;
+  color: var(--sql-fg);
+  caret-color: var(--sql-fg);
+  outline: none;
+}
+textarea::selection {
+  background: #4285f455;
+}
+:host(.ready) pre {
+  visibility: visible;
+}
+:host(.ready) textarea {
+  color: transparent;
+}
+:host(.composing) textarea {
+  color: var(--sql-fg);
+}
+:host(.composing) pre {
+  visibility: hidden;
+}
+.wrapped pre,
+.wrapped textarea {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.token.keyword {
+  color: var(--sql-keyword);
+}
+.token.string {
+  color: var(--sql-string);
+}
+.token.number,
+.token.boolean {
+  color: var(--sql-number);
+}
+.token.comment {
+  color: var(--sql-comment);
+}
+.token.operator {
+  color: var(--sql-operator);
+}
+.feedback {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+.feedback:empty {
+  margin: 0;
+}
+.error {
+  color: var(--sql-error);
+}
+@media (forced-colors: active) {
+  :host(.ready) pre {
+    visibility: hidden;
+  }
+  :host(.ready) textarea {
+    color: CanvasText;
+    caret-color: CanvasText;
+  }
+}

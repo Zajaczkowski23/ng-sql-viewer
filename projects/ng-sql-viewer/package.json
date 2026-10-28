@@ -1,0 +1,15 @@
+{
+  "name": "ng-sql-viewer",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^21.0.0 || ^22.0.0",
+    "@angular/core": "^21.0.0 || ^22.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "prismjs": "1.30.0",
+    "sql-formatter": "15.6.10"
+  },
+  "sideEffects": false,
+  "description": "Standalone Angular SQL viewer with optional native editing, formatting, and copying."
+}
