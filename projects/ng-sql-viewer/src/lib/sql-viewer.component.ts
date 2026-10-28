@@ -20,6 +20,9 @@ import { format, type SqlLanguage } from 'sql-formatter';
 import Prism from 'prismjs/components/prism-core.js';
 import 'prismjs/components/prism-sql.js';
 
+// Tokenize only this component's SQL; never scan the consumer application's DOM.
+Prism.manual = true;
+
 interface HighlightToken {
   text: string;
   type: string;
