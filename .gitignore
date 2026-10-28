@@ -20,13 +20,8 @@ yarn-error.log
 .settings/
 *.sublime-workspace
 
-# Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/mcp.json
+# Local Visual Studio Code configuration
+/.vscode/
 .history/*
 
 # Miscellaneous
@@ -42,3 +37,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Local agent tickets and planning artifacts
+/.scratch/
+/docs/superpowers/
