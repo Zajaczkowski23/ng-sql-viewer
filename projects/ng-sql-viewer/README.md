@@ -1,10 +1,16 @@
 # ng-sql-viewer
 
-A standalone Angular component for displaying and optionally editing SQL.
+Display SQL in Angular with syntax highlighting, formatting, and a copy button. Enable editing when you need it.
+
+Supports Angular 21 and 22. Styles and dependencies are included. No extra setup required.
+
+## Get started
 
 ```sh
 npm install ng-sql-viewer
 ```
+
+Import the component and pass it your SQL:
 
 ```ts
 import { Component } from '@angular/core';
@@ -20,62 +26,42 @@ export class QueryDetails {
 }
 ```
 
-The package name is provisional; this project has not been published. For local use, run `npm run build` and `npm pack ./dist/ng-sql-viewer`, then install the resulting tarball in your application.
+## Enable editing
 
-Prism SQL highlighting, formatter dialects, and component styles ship through the package. No stylesheet imports, providers, themes, or extra highlighter/formatter installs are needed.
-
-## Editing
+Use two-way binding to keep `query` updated as the user types:
 
 ```html
 <ng-sql-viewer [(sql)]="query" [editable]="true" />
 ```
 
-Each native input emits the complete current SQL immediately. Initial values and parent replacements do not emit. Parent echoes preserve native selection and scrolling. Disabling editing retains the draft. Your application owns persistence; the component does not execute queries, connect to a database, or provide Save.
+The component edits text only. Your application handles saving or running queries.
 
-## Configuration
+## Customize
+
+For example, use PostgreSQL formatting, a dark theme, and a shorter viewer:
 
 ```html
-<ng-sql-viewer
-  [(sql)]="query"
-  [editable]="true"
-  dialect="postgresql"
-  theme="dark"
-  height="240px"
-  [wrap]="true"
-  [showCopy]="true"
-  [showFormat]="true"
-  ariaLabel="Order query"
-  (formatError)="onFormatError($event)"
-/>
+<ng-sql-viewer [sql]="query" dialect="postgresql" theme="dark" height="240px" />
 ```
 
-- `sql`: string, default `''`; paired with `sqlChange: string` for two-way binding.
-- `editable`: boolean, default `false`.
-- `dialect`: supported sql-formatter identifier, default `'sql'`. Includes `bigquery`, `db2`, `db2i`, `duckdb`, `hive`, `mariadb`, `mysql`, `tidb`, `n1ql`, `plsql`, `postgresql`, `redshift`, `spark`, `sqlite`, `sql`, `trino`, `transactsql`, `singlestoredb`, `snowflake`, and alias `tsql`.
-- `theme`: `'system' | 'light' | 'dark'`, default `'system'`, following preference changes through CSS.
-- `height`: CSS length string, default `'320px'`; the text surface scrolls internally.
-- `wrap`: boolean, default `false`, preserving horizontal scrolling.
-- `showCopy` and `showFormat`: booleans, each default `true`, independently hiding actions.
-- `ariaLabel`: string, default `'SQL query'`, naming the native text surface.
-- `formatError`: `SqlFormatError` output containing `{ message: string; dialect: string }`. Messages do not include source SQL or raw dependency errors.
+All inputs are optional:
+
+- `sql`: SQL text. Defaults to `''`; supports two-way binding with `[(sql)]`.
+- `editable`: allow editing. Defaults to `false`.
+- `dialect`: SQL formatting dialect, such as `postgresql`, `mysql`, `sqlite`, or `tsql`. Defaults to `sql`.
+- `theme`: `system`, `light`, or `dark`. Defaults to `system`.
+- `height`: viewer height as a CSS length. Defaults to `320px`.
+- `wrap`: wrap long lines. Defaults to `false`.
+- `showCopy` / `showFormat`: show the toolbar buttons. Both default to `true`.
+- `ariaLabel`: accessible label for the SQL text area. Defaults to `SQL query`.
 
 ## Formatting and copying
 
-SQL is initially preserved verbatim, including whitespace and trailing lines. Only the Format button invokes sql-formatter. Dialect changes leave text unchanged. Generic Prism SQL highlighting is lexical coloring, not validation.
+SQL stays as supplied until the user clicks **Format**. In read-only mode, formatting changes only the displayed text. In editing mode, it also updates the bound SQL through `sqlChange`.
 
-In read-only mode, Format changes temporary presentation only; Copy uses that displayed text. Entering editing restores application SQL. In editing mode, Format replaces the draft and emits one value. Parent replacements supersede temporary presentation. Format failures preserve SQL and emit one error per attempt. A successful format, new application SQL, or user edit clears the error.
+If formatting fails, the SQL is kept and `formatError` emits `{ message, dialect }`. You can handle it with `(formatError)="onFormatError($event)"`.
 
-Incomplete or dialect-specific SQL may not format successfully. Native undo works for ordinary text edits; preserving undo history across programmatic Format or parent replacement is not guaranteed. No custom indentation, autocomplete, diagnostics, line numbers, Angular Forms adapter, or imperative API is provided. Tab moves focus normally.
-
-Copy reports success only after clipboard completion. Browser permission and secure-context restrictions can prevent access; inline feedback explains how to use native selection and copy instead. Clipboard failure does not emit `formatError` or change SQL.
-
-## Compatibility and validation
-
-Targets Angular 21 and 22 through peer dependencies, without bundling an Angular runtime. Packed consumers were verified on Angular 21.2.25 and 22.2.3 during implementation. Chromium checks covered editing, native undo, scrolling, wrapping, resizing, and SSR hydration. Firefox, WebKit, real mobile/IME input, and assistive-technology validation remain outstanding.
-
-Server output preserves readable native SQL. Browser-only observers are initialized after rendering and disconnected on destruction. Forced-colors mode exposes native text. Consumers use their application's ordinary Angular SSR/hydration setup.
-
-Prism and the formatter's nearley dependency produce CommonJS optimization warnings. All formatter dialects are included eagerly; no size or large-query performance guarantee is made.
+**Copy** copies the displayed text. If the browser blocks clipboard access, the viewer shows instructions for copying manually.
 
 ## Development
 
@@ -84,9 +70,10 @@ npm ci
 npm run typecheck
 npm test -- --watch=false
 npm run build
-npm pack ./dist/ng-sql-viewer
 ```
 
-The repository contains the component library, its tests, and Angular library build configuration.
+To try local changes in another app, run `npm pack ./dist/ng-sql-viewer` and install the generated tarball.
 
-No npm publication is performed. The project uses the MIT license. The final package identity requires a release decision. Third-party runtime licenses are included in `THIRD_PARTY_NOTICES.md`.
+## License
+
+[MIT](./LICENSE). Third-party licenses are included in `THIRD_PARTY_NOTICES.md` in the npm package.
