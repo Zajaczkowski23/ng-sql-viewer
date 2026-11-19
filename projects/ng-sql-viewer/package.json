@@ -1,6 +1,22 @@
 {
   "name": "ng-sql-viewer",
   "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zajaczkowski23/ng-sql-viewer.git",
+    "directory": "projects/ng-sql-viewer"
+  },
+  "homepage": "https://github.com/Zajaczkowski23/ng-sql-viewer#readme",
+  "bugs": {
+    "url": "https://github.com/Zajaczkowski23/ng-sql-viewer/issues"
+  },
+  "keywords": [
+    "angular",
+    "sql",
+    "sql-viewer",
+    "sql-formatter",
+    "syntax-highlighting"
+  ],
   "peerDependencies": {
     "@angular/common": "^21.0.0 || ^22.0.0",
     "@angular/core": "^21.0.0 || ^22.0.0"
