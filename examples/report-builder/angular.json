@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "cli": { "analytics": false },
+  "projects": {
+    "report-builder": {
+      "root": "",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "main.ts",
+            "index": "index.html",
+            "tsConfig": "tsconfig.json",
+            "outputPath": "dist"
+          }
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": { "buildTarget": "report-builder:build" }
+        }
+      }
+    }
+  }
+}
