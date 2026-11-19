@@ -2,6 +2,8 @@
 
 Display SQL in Angular with syntax highlighting, formatting, and a copy button. Enable editing when you need it.
 
+[Try the report builder demo on StackBlitz](https://stackblitz.com/fork/github/Zajaczkowski23/ng-sql-viewer/tree/stackblitz-demo/examples/report-builder?file=main.ts).
+
 Supports Angular 21 and 22. Styles and dependencies are included. No extra setup required.
 
 ## Get started
