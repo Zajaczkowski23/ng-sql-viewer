@@ -1,0 +1,4 @@
+npm audit
+npm run typecheck
+npm test -- --watch=false
+npm run build
