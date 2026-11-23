@@ -41,3 +41,8 @@ Thumbs.db
 # Local agent tickets and planning artifacts
 /.scratch/
 /docs/superpowers/
+
+# Local component playground
+/.local-demo/
+/docs/
+/examples
