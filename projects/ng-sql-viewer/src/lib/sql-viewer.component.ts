@@ -70,6 +70,7 @@ export class SqlViewerComponent implements OnChanges {
   protected readonly displayed = signal('');
   protected readonly ready = signal(false);
   protected readonly composing = signal(false);
+  protected readonly formDisabled = signal(false);
   protected readonly tokens = computed(() =>
     flattenTokens(Prism.tokenize(this.displayed(), Prism.languages['sql'])),
   );
@@ -77,6 +78,9 @@ export class SqlViewerComponent implements OnChanges {
   private initialized = false;
   private applicationSql = '';
   private wasEditable = false;
+  private formBound = false;
+  private onFormChange: (value: string) => void = () => {};
+  private onFormTouched: () => void = () => {};
   private readonly field = viewChild<ElementRef<HTMLTextAreaElement>>('field');
   private readonly layer = viewChild<ElementRef<HTMLPreElement>>('layer');
   private readonly destroyRef = inject(DestroyRef);
@@ -102,10 +106,10 @@ export class SqlViewerComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.initialized) {
-      this.initialValue = this.sql();
+      this.initialValue = this.formBound ? this.applicationSql : this.sql();
       this.initialized = true;
     }
-    if (changes['sql'] && this.sql() !== this.applicationSql) {
+    if (!this.formBound && changes['sql'] && this.sql() !== this.applicationSql) {
       this.error.set('');
       this.applicationSql = this.sql();
       this.displayed.set(this.applicationSql);
@@ -114,7 +118,32 @@ export class SqlViewerComponent implements OnChanges {
     this.wasEditable = this.editable();
   }
 
+  writeValue(value: string | null): void {
+    this.formBound = true;
+    this.applicationSql = value ?? '';
+    if (!this.ready()) this.initialValue = this.applicationSql;
+    this.displayed.set(this.applicationSql);
+    this.error.set('');
+  }
+
+  registerOnChange(callback: (value: string) => void): void {
+    this.onFormChange = callback;
+  }
+
+  registerOnTouched(callback: () => void): void {
+    this.onFormTouched = callback;
+  }
+
+  setDisabledState(disabled: boolean): void {
+    this.formDisabled.set(disabled);
+  }
+
+  protected onBlur(): void {
+    this.onFormTouched();
+  }
+
   protected async copySql(): Promise<void> {
+    if (this.formDisabled()) return;
     const attempt = ++this.copyAttempt;
     this.copyFeedback.set('');
     try {
@@ -133,14 +162,12 @@ export class SqlViewerComponent implements OnChanges {
   }
 
   protected formatSql(): void {
+    if (this.formDisabled()) return;
     try {
       const formatted = format(this.displayed(), { language: this.dialect() });
       this.displayed.set(formatted);
       this.error.set('');
-      if (this.editable()) {
-        this.applicationSql = formatted;
-        this.sqlChange.emit(formatted);
-      }
+      if (this.editable()) this.commitEdit(formatted);
     } catch {
       const message = 'Unable to format SQL. Check the query and selected dialect.';
       this.error.set(message);
@@ -149,12 +176,17 @@ export class SqlViewerComponent implements OnChanges {
   }
 
   protected onInput(event: Event): void {
-    if (!this.editable()) return;
+    if (!this.editable() || this.formDisabled()) return;
     const value = (event.target as HTMLTextAreaElement).value;
     this.error.set('');
-    this.applicationSql = value;
     this.displayed.set(value);
-    this.sqlChange.emit(value);
+    this.commitEdit(value);
+  }
+
+  private commitEdit(value: string): void {
+    this.applicationSql = value;
+    if (this.formBound) this.onFormChange(value);
+    else this.sqlChange.emit(value);
   }
 
   protected syncScroll(): void {

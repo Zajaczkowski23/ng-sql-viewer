@@ -34,6 +34,20 @@ Enable editing and bind the SQL to your component.
 
 The component edits text only. Your application handles saving or running queries.
 
+### Angular Forms
+
+For a reactive form, import `SqlViewerComponent`, `SqlViewerFormsDirective` from `ng-sql-viewer/forms`, and `ReactiveFormsModule` in your host component.
+
+```html
+<ng-sql-viewer [formControl]="queryControl" [editable]="true" />
+```
+
+Initialize `queryControl` with `new FormControl('', { nonNullable: true })`. Use `formControlName` inside a form group, or import `FormsModule` and use `[(ngModel)]="query"` for a template-driven form.
+
+Use one value binding per viewer. The form supplies the SQL, receives edits and formatting changes in edit mode, and marks the control touched when the text area loses focus. Disabling the control also disables the toolbar.
+
+Forms integration requires `@angular/forms` at the same version as your app's `@angular/core`. Plain `[sql]` and `[(sql)]` bindings only need `SqlViewerComponent`.
+
 ## Customize
 
 For example, use PostgreSQL formatting, a dark theme, and a shorter viewer.

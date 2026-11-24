@@ -1,9 +1,19 @@
 <div class="toolbar">
   @if (showCopy()) {
-    <button type="button" data-action="copy" (click)="copySql()">Copy</button>
+    <button type="button" data-action="copy" [disabled]="formDisabled()" (click)="copySql()">
+      Copy
+    </button>
   }
   @if (showFormat()) {
-    <button type="button" data-action="format" (click)="formatSql()">Format</button>
+    <button
+      type="button"
+      data-action="format"
+      [disabled]="formDisabled()"
+      (click)="formatSql()"
+      (blur)="editable() && onBlur()"
+    >
+      Format
+    </button>
   }
 </div>
 <div class="surface" [class.wrapped]="wrap()" [style.height]="height()">
@@ -13,12 +23,14 @@
   ><code>@for (token of tokens(); track $index) {<span [class]="token.type ? 'token ' + token.type : ''">{{ token.text }}</span>}</code></pre>
   <textarea
     #field
+    [disabled]="formDisabled()"
     [readOnly]="!editable()"
     spellcheck="false"
     [attr.wrap]="wrap() ? 'soft' : 'off'"
     [value]="initialValue"
     [attr.aria-label]="ariaLabel()"
     (input)="onInput($event)"
+    (blur)="onBlur()"
     (scroll)="syncScroll()"
     (compositionstart)="composing.set(true)"
     (compositionend)="composing.set(false)"

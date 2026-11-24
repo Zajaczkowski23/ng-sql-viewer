@@ -63,8 +63,12 @@ button {
   padding: 5px 12px;
   cursor: pointer;
 }
-button:hover {
+button:enabled:hover {
   border-color: var(--sql-focus);
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.55;
 }
 button:focus-visible,
 .surface:focus-within {
