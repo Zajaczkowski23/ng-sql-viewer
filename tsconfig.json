@@ -10,6 +10,9 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
+    "paths": {
+      "ng-sql-viewer": ["./projects/ng-sql-viewer/src/public-api.ts"]
+    },
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve"

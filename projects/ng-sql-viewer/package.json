@@ -1,6 +1,6 @@
 {
   "name": "ng-sql-viewer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zajaczkowski23/ng-sql-viewer.git",
@@ -19,7 +19,13 @@
   ],
   "peerDependencies": {
     "@angular/common": "^21.0.0 || ^22.0.0",
-    "@angular/core": "^21.0.0 || ^22.0.0"
+    "@angular/core": "^21.0.0 || ^22.0.0",
+    "@angular/forms": "^21.0.0 || ^22.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@angular/forms": {
+      "optional": true
+    }
   },
   "dependencies": {
     "tslib": "^2.3.0",
